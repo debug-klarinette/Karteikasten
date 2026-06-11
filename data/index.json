@@ -1,0 +1,22 @@
+{
+  "semesters": [
+    {
+      "name": "Semester 1 · WS 25/26",
+      "courses": [
+        {
+          "name": "Fixed Income",
+          "lectures": [
+            { "name": "VL 01 – Anleihen, Spot & Forward Rates", "file": "data/sem1/fixed-income/vl01.md" },
+            { "name": "VL 02 – Zinsstrukturkurve & Duration", "file": "data/sem1/fixed-income/vl02.md" }
+          ]
+        },
+        {
+          "name": "Futures & Risikomanagement",
+          "lectures": [
+            { "name": "VL 01 – FDAX, Margin & VaR", "file": "data/sem1/futures-risikomanagement/vl01.md" }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Karteikasten</title>
+  <meta name="description" content="Karteikarten-Quiz für Vorlesungen – nach Semester, Kurs und Vorlesung organisiert.">
+
+  <link rel="manifest" href="./manifest.webmanifest">
+  <meta name="theme-color" content="#0065BD">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Karteikasten">
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+  <!-- ───────────────────────── Bibliothek ───────────────────────── -->
+  <main id="view-library" class="view">
+    <header class="app-header">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <h1>Karteikasten</h1>
+      </div>
+      <p class="tagline">Vorlesungen auswählen, abfragen lassen.</p>
+    </header>
+
+    <div id="library-content" class="library">
+      <p class="loading-note">Lade Kurse&nbsp;…</p>
+    </div>
+
+    <section class="quiz-options" aria-label="Quiz-Einstellungen">
+      <label class="switch-row">
+        <input type="checkbox" id="opt-shuffle-questions" checked>
+        <span class="switch" aria-hidden="true"></span>
+        <span>Fragen mischen</span>
+      </label>
+      <label class="switch-row">
+        <input type="checkbox" id="opt-shuffle-answers" checked>
+        <span class="switch" aria-hidden="true"></span>
+        <span>Antwortreihenfolge mischen</span>
+      </label>
+    </section>
+
+    <div class="footer-spacer" aria-hidden="true"></div>
+
+    <footer class="action-bar">
+      <div class="selection-summary" id="selection-summary">Keine Vorlesung ausgewählt</div>
+      <button id="btn-start" class="btn btn-primary" disabled>Quiz starten</button>
+    </footer>
+  </main>
+
+  <!-- ───────────────────────── Quiz ───────────────────────── -->
+  <main id="view-quiz" class="view" hidden>
+    <header class="quiz-header">
+      <button id="btn-quit" class="btn-icon" aria-label="Quiz beenden und zur Übersicht">←</button>
+      <div class="quiz-progress-wrap">
+        <div class="quiz-counter"><span id="quiz-counter-text">Frage 1 / 10</span></div>
+        <div class="progress-track" aria-hidden="true"><div id="progress-fill" class="progress-fill"></div></div>
+      </div>
+      <div class="quiz-score" id="quiz-score" title="Richtig beantwortet">0 ✓</div>
+    </header>
+
+    <div class="quiz-body">
+      <article class="card" id="question-card">
+        <div class="card-meta" id="question-meta">Fixed Income · VL 01</div>
+        <div class="card-type" id="question-type">Single Choice</div>
+        <h2 class="card-question" id="question-text"></h2>
+
+        <div id="answers-hidden" class="answers-hidden">
+          <p>Erst überlegen –<br>dann Antworten einblenden.</p>
+        </div>
+
+        <ol id="answer-list" class="answer-list" hidden></ol>
+
+        <div id="explanation" class="explanation" hidden>
+          <div class="explanation-label">Erklärung</div>
+          <p id="explanation-text"></p>
+        </div>
+      </article>
+    </div>
+
+    <div class="footer-spacer" aria-hidden="true"></div>
+
+    <footer class="action-bar">
+      <button id="btn-quiz-action" class="btn btn-primary">Antworten einblenden</button>
+    </footer>
+  </main>
+
+  <!-- ───────────────────────── Ergebnis ───────────────────────── -->
+  <main id="view-summary" class="view" hidden>
+    <header class="app-header">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <h1>Ergebnis</h1>
+      </div>
+    </header>
+
+    <section class="summary-hero">
+      <div class="summary-score"><span id="summary-correct">0</span><span class="summary-total">/ <span id="summary-total">0</span></span></div>
+      <div class="summary-percent" id="summary-percent">0&nbsp;% richtig</div>
+      <p class="summary-note" id="summary-note"></p>
+    </section>
+
+    <section id="summary-wrong-section" class="summary-wrong" hidden>
+      <h2 class="section-label">Falsch beantwortet</h2>
+      <ul id="summary-wrong-list" class="wrong-list"></ul>
+    </section>
+
+    <div class="footer-spacer" aria-hidden="true"></div>
+
+    <footer class="action-bar action-bar-stacked">
+      <button id="btn-retry-wrong" class="btn btn-secondary" hidden>Falsche Fragen wiederholen</button>
+      <button id="btn-restart" class="btn btn-secondary">Quiz neu starten</button>
+      <button id="btn-back-library" class="btn btn-primary">Zur Übersicht</button>
+    </footer>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
