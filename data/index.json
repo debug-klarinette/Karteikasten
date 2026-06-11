@@ -1,0 +1,22 @@
+{
+  "semesters": [
+    {
+      "name": "Semester 1 · SS 26",
+      "courses": [
+        {
+          "name": "Derivatives",
+          "lectures": [
+            { "name": "VL 01 – Introduction", "file": "data/sem2/derivatives/vl01.md" },
+            { "name": "VL 02 – Futures Markets & Hedging", "file": "data/sem2/derivatives/vl02.md" },
+            { "name": "VL 03 – Interest Rates", "file": "data/sem2/derivatives/vl03.md" },
+            { "name": "VL 04 – Futures Pricing", "file": "data/sem2/derivatives/vl04.md" },
+            { "name": "VL 05 – Swaps", "file": "data/sem2/derivatives/vl05.md" },
+            { "name": "VL 06 – Options (1): Payoffs, Strategies & Binomial Model", "file": "data/sem2/derivatives/vl06.md" },
+            { "name": "VL 07 – Options (2): Black/Scholes", "file": "data/sem2/derivatives/vl07.md" },
+            { "name": "VL 08 – Implied Volatility & Greeks", "file": "data/sem2/derivatives/vl08.md" }
+          ]
+        }
+      ]
+    }
+  ]
+}
