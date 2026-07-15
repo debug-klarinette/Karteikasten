@@ -13,7 +13,8 @@
             { "name": "VL 05 – Swaps", "file": "data/sem1/derivatives/vl05.md" },
             { "name": "VL 06 – Options (1): Payoffs, Strategies & Binomial Model", "file": "data/sem1/derivatives/vl06.md" },
             { "name": "VL 07 – Options (2): Black/Scholes", "file": "data/sem1/derivatives/vl07.md" },
-            { "name": "VL 08 – Implied Volatility & Greeks", "file": "data/sem1/derivatives/vl08.md" }
+            { "name": "VL 08 – Implied Volatility & Greeks", "file": "data/sem1/derivatives/vl08.md" },
+            { "name": "Mock Exam – Final Exam SS22 (37 Fragen)", "file": "data/sem1/derivatives/mock-exam-ss22.md" }
           ]
         },
         {
@@ -34,3 +35,4 @@
     }
   ]
 }
+
