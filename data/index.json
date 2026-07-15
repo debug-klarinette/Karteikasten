@@ -15,6 +15,20 @@
             { "name": "VL 07 – Options (2): Black/Scholes", "file": "data/sem1/derivatives/vl07.md" },
             { "name": "VL 08 – Implied Volatility & Greeks", "file": "data/sem1/derivatives/vl08.md" }
           ]
+        },
+        {
+          "name": "Fabrikplanung",
+          "lectures": [
+            { "name": "VL 01 – Introduction", "file": "data/sem1/fabrikplanung/vl01.md" },
+            { "name": "VL 02 – Goal definition", "file": "data/sem1/fabrikplanung/vl02.md" },
+            { "name": "VL 03 – Location planning", "file": "data/sem1/fabrikplanung/vl03.md" },
+            { "name": "VL 04 – Structure and layout planning", "file": "data/sem1/fabrikplanung/vl04.md" },
+            { "name": "VL 05 – Manufacturing and Assembly System Planning", "file": "data/sem1/fabrikplanung/vl05.md" },
+            { "name": "VL 06 – Logistics Planning", "file": "data/sem1/fabrikplanung/vl06.md" },
+            { "name": "VL 07 – Efficiency and Lean Production", "file": "data/sem1/fabrikplanung/vl07.md" },
+            { "name": "VL 08 – Factory Planning Management", "file": "data/sem1/fabrikplanung/vl08.md" },
+            { "name": "VL 09 – Digital Tools in Factory Planning", "file": "data/sem1/fabrikplanung/vl09.md" }
+          ]
         }
       ]
     }
