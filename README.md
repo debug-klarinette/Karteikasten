@@ -54,6 +54,10 @@ gleichzeitig am Computer und am Handy lernen, sondern die Datei hin- und hergebe
 - Kartenvorlagen mit deinem Anki-CSS, Bilder, Audio, Lückentext (Cloze),
   Eingabefelder (`{{type:…}}`), Image Occlusion
 - Mehrere Dateien parallel, offline nutzbar
+- iOS-nahe Bedienung: Wischen vom linken Rand geht zurück, Sheets lassen sich
+  herunterziehen, Antippen der Karte zeigt die Antwort; Bewegungen laufen über
+  Federn und lassen sich jederzeit greifen. Systemschrift mit Dynamic Type,
+  „Bewegung reduzieren“, „Transparenz reduzieren“ und „Kontrast erhöhen“ werden beachtet.
 - Karten aus **Filterstapeln** werden beim Lernen in ihren Heimatstapel
   zurückgelegt (wie „Leeren“ in Anki); den Filterstapel in Anki danach einfach neu aufbauen
 
@@ -84,6 +88,7 @@ nach, falls du FSRS nutzt), JavaScript in Kartenvorlagen, MathJax.
 | `anki/scheduler.js` | Ankis SM-2-Planer (nachgebaut nach `rslib/src/scheduler`) |
 | `anki/render.js` | Kartenvorlagen, Cloze, Image Occlusion, Medien |
 | `anki/proto.js`, `anki/zstd.js` | Protobuf- und Zstandard-Hilfen |
+| `ui/motion.js` | Federn, Geschwindigkeit, Schwung-Projektion, Gummiband |
 | `vendor/` | [SQLite WASM](https://sqlite.org/wasm) 3.54.1, [fflate](https://github.com/101arrowz/fflate) 0.8.3, [fzstd](https://github.com/101arrowz/fzstd) 0.1.1 |
 | `manifest.webmanifest`, `sw.js`, `icons/` | PWA: Home-Bildschirm & Offline-Betrieb |
 

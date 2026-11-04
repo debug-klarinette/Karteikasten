@@ -7,7 +7,8 @@
   <meta name="description" content="Anki-Karten unterwegs lernen – .apkg/.colpkg öffnen, lernen, mit Fortschritt zurück an Anki geben.">
 
   <link rel="manifest" href="./manifest.webmanifest">
-  <meta name="theme-color" content="#0065BD">
+  <meta name="theme-color" content="#F2F4F7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0B1016" media="(prefers-color-scheme: dark)">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -15,130 +16,149 @@
   <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;900&display=swap" rel="stylesheet">
-
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
 
-  <!-- ───────── Bibliothek: geladene Anki-Dateien ───────── -->
-  <main id="view-home" class="view">
-    <header class="app-header">
-      <div class="brand">
-        <span class="brand-mark" aria-hidden="true"></span>
-        <h1>Karteikasten</h1>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-back" viewBox="0 0 12 20"><path d="M10 2 2 10l8 8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2" fill="currentColor"/><circle cx="19" cy="12" r="2" fill="currentColor"/></symbol>
+    <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 7 4 12l5 5M4.5 12H15a5 5 0 0 1 0 10h-2" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" transform="translate(0 -3)"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 8 14"><path d="m1.5 1.5 5 5.5-5 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 3v12M7.5 7.5 12 3l4.5 4.5M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </svg>
+
+  <div id="stack" class="stack">
+
+    <!-- ───────── Bibliothek ───────── -->
+    <main id="view-home" class="view" data-view="home">
+      <header class="nav-bar">
+        <div class="nav-side"></div>
+        <div class="nav-title">Karteikasten</div>
+        <div class="nav-side nav-side-end"></div>
+      </header>
+      <div class="view-content">
+        <div class="large-title">
+          <div class="brand"><span class="brand-mark" aria-hidden="true"></span><h1>Karteikasten</h1></div>
+          <p class="subtitle">Anki-Stapel unterwegs lernen.</p>
+        </div>
+
+        <section id="home-list" class="group" aria-label="Geladene Dateien"></section>
+
+        <section id="home-empty" class="empty" hidden>
+          <h2 class="section-title">So geht's</h2>
+          <ol class="steps group">
+            <li><span class="step-no">1</span><span>In Anki am Computer <b>Datei → Exportieren</b>, Format <b>Anki-Sammlungspaket (.colpkg)</b>, „Lernfortschritt“ und „Medien“ anhaken.</span></li>
+            <li><span class="step-no">2</span><span>Datei aufs Handy bringen – AirDrop, iCloud Drive oder Mail.</span></li>
+            <li><span class="step-no">3</span><span>Unten <b>Anki-Datei öffnen</b> und lernen.</span></li>
+            <li><span class="step-no">4</span><span>Danach <b>Exportieren</b> und die Datei in Anki wieder importieren.</span></li>
+          </ol>
+        </section>
       </div>
-      <p class="tagline">Anki-Stapel unterwegs lernen.</p>
-    </header>
+      <footer class="toolbar">
+        <label class="btn btn-primary btn-file">
+          <input type="file" id="file-input" hidden>
+          Anki-Datei öffnen
+        </label>
+      </footer>
+    </main>
 
-    <section id="home-list" class="pkg-list" aria-label="Geladene Dateien"></section>
+    <!-- ───────── Stapel einer Datei ───────── -->
+    <main id="view-decks" class="view" data-view="decks" hidden>
+      <header class="nav-bar">
+        <div class="nav-side">
+          <button class="nav-back" data-back><svg><use href="#i-back"/></svg><span>Bibliothek</span></button>
+        </div>
+        <div class="nav-title" id="decks-compact">–</div>
+        <div class="nav-side nav-side-end">
+          <button class="icon-btn" id="btn-pkg-menu" aria-label="Datei-Optionen"><svg><use href="#i-more"/></svg></button>
+        </div>
+      </header>
+      <div class="view-content">
+        <div class="large-title">
+          <div class="kicker" id="decks-kicker">Datei</div>
+          <h1 id="decks-title">–</h1>
+        </div>
 
-    <section id="home-empty" class="empty" hidden>
-      <div class="empty-card">
-        <h2>So geht's</h2>
-        <ol class="steps">
-          <li>In Anki am Computer: <b>Datei → Exportieren</b>, Format <b>Anki-Sammlungspaket (.colpkg)</b> oder <b>Anki-Stapelpaket (.apkg)</b>, „Lernfortschritt einbeziehen“ und „Medien einbeziehen“ anhaken.</li>
-          <li>Die Datei aufs Handy bringen (AirDrop, iCloud Drive, Mail …).</li>
-          <li>Hier unten <b>Anki-Datei öffnen</b> und lernen.</li>
-          <li>Fertig? <b>Für Anki exportieren</b> und die Datei am Computer wieder importieren.</li>
-        </ol>
-      </div>
-    </section>
+        <button id="dirty-banner" class="banner" hidden>
+          <span class="banner-dot" aria-hidden="true"></span>
+          <span class="banner-text">Neuer Lernfortschritt – noch nicht an Anki zurückgegeben.</span>
+          <span class="banner-action">Exportieren</span>
+        </button>
 
-    <div class="footer-spacer" aria-hidden="true"></div>
-    <footer class="action-bar">
-      <label class="btn btn-primary btn-file">
-        <input type="file" id="file-input" hidden>
-        Anki-Datei öffnen
-      </label>
-    </footer>
-  </main>
+        <div class="deck-head" aria-hidden="true">
+          <span>Stapel</span><span class="c-new">Neu</span><span class="c-learn">Lernen</span><span class="c-due">Fällig</span>
+        </div>
+        <ul id="deck-list" class="group deck-list"></ul>
 
-  <!-- ───────── Stapelübersicht einer Datei ───────── -->
-  <main id="view-decks" class="view" hidden>
-    <header class="bar">
-      <button class="btn-icon" data-nav="home" aria-label="Zurück zur Bibliothek">←</button>
-      <div class="bar-title">
-        <div class="bar-kicker" id="decks-kicker">Datei</div>
-        <h1 id="decks-title">–</h1>
-      </div>
-      <button class="btn-icon" id="btn-pkg-menu" aria-label="Datei-Menü">⋯</button>
-    </header>
-
-    <div id="dirty-banner" class="banner" hidden>
-      <span>Neuer Lernfortschritt – noch nicht an Anki zurückgegeben.</span>
-      <button class="btn-link" id="btn-banner-export">Exportieren</button>
-    </div>
-
-    <div class="deck-head" aria-hidden="true">
-      <span>Stapel</span><span class="c-new">Neu</span><span class="c-learn">Lernen</span><span class="c-due">Fällig</span>
-    </div>
-    <ul id="deck-list" class="deck-list"></ul>
-
-    <label class="switch-row">
-      <input type="checkbox" id="opt-ignore-limits">
-      <span class="switch" aria-hidden="true"></span>
-      <span>Tageslimits ignorieren <small>(alle neuen Karten sofort)</small></span>
-    </label>
-
-    <div class="footer-spacer" aria-hidden="true"></div>
-    <footer class="action-bar action-bar-split">
-      <button id="btn-export" class="btn btn-secondary">Exportieren</button>
-      <button id="btn-study-all" class="btn btn-primary">Alles lernen</button>
-    </footer>
-  </main>
-
-  <!-- ───────── Lernen ───────── -->
-  <main id="view-study" class="view view-study" hidden>
-    <header class="bar">
-      <button class="btn-icon" id="btn-study-back" aria-label="Lernen beenden">←</button>
-      <div class="bar-title">
-        <div class="bar-kicker" id="study-deck">Stapel</div>
-        <div class="counts" id="study-counts">
-          <span class="c-new">0</span><span class="c-learn">0</span><span class="c-due">0</span>
+        <div class="group">
+          <label class="switch-row">
+            <span class="switch-text">Tageslimits ignorieren<small>Alle neuen Karten sofort lernen</small></span>
+            <input type="checkbox" id="opt-ignore-limits">
+            <span class="switch" aria-hidden="true"></span>
+          </label>
         </div>
       </div>
-      <button class="btn-icon" id="btn-undo" aria-label="Letzte Antwort rückgängig" disabled>↶</button>
-    </header>
+      <footer class="toolbar toolbar-split">
+        <button id="btn-export" class="btn btn-secondary"><svg class="btn-icon-svg"><use href="#i-share"/></svg>Exportieren</button>
+        <button id="btn-study-all" class="btn btn-primary">Alles lernen</button>
+      </footer>
+    </main>
 
-    <div class="study-body">
-      <article class="anki-card" id="card-host" aria-live="polite"></article>
-
-      <section id="study-done" class="done" hidden>
-        <div class="done-mark" aria-hidden="true">✓</div>
-        <h2 id="done-title">Für heute geschafft</h2>
-        <p id="done-text"></p>
-        <div class="done-actions">
-          <button id="btn-learn-ahead" class="btn btn-secondary" hidden>Lernkarten jetzt wiederholen</button>
-          <button id="btn-done-back" class="btn btn-primary">Zur Übersicht</button>
+    <!-- ───────── Lernen ───────── -->
+    <main id="view-study" class="view view-study" data-view="study" hidden>
+      <header class="nav-bar">
+        <div class="nav-side">
+          <button class="nav-back" data-back><svg><use href="#i-back"/></svg><span>Stapel</span></button>
         </div>
-      </section>
-    </div>
+        <div class="nav-title nav-title-study">
+          <div class="nav-kicker" id="study-deck">Stapel</div>
+          <div class="counts" id="study-counts"><span class="c-new">0</span><span class="c-learn">0</span><span class="c-due">0</span></div>
+        </div>
+        <div class="nav-side nav-side-end">
+          <button class="icon-btn" id="btn-undo" aria-label="Letzte Antwort rückgängig" disabled><svg><use href="#i-undo"/></svg></button>
+        </div>
+      </header>
+      <div class="view-content study-body">
+        <article class="anki-card" id="card-host" aria-live="polite"></article>
+        <p class="tap-hint" id="tap-hint">Tippen, um die Antwort zu sehen</p>
 
-    <div class="footer-spacer" aria-hidden="true"></div>
-    <footer class="action-bar" id="study-actions">
-      <button id="btn-show" class="btn btn-primary btn-wide">Antwort zeigen</button>
-      <div id="ease-buttons" class="ease-row" hidden>
-        <button class="ease ease-1" data-ease="1"><span class="ease-ivl"></span><span class="ease-name">Nochmal</span></button>
-        <button class="ease ease-2" data-ease="2"><span class="ease-ivl"></span><span class="ease-name">Schwer</span></button>
-        <button class="ease ease-3" data-ease="3"><span class="ease-ivl"></span><span class="ease-name">Gut</span></button>
-        <button class="ease ease-4" data-ease="4"><span class="ease-ivl"></span><span class="ease-name">Einfach</span></button>
+        <section id="study-done" class="done" hidden>
+          <div class="done-mark" aria-hidden="true">✓</div>
+          <h2 id="done-title">Für heute geschafft</h2>
+          <p id="done-text"></p>
+          <div class="done-actions">
+            <button id="btn-learn-ahead" class="btn btn-secondary" hidden>Lernkarten jetzt wiederholen</button>
+            <button id="btn-done-back" class="btn btn-primary">Zur Übersicht</button>
+          </div>
+        </section>
       </div>
-    </footer>
-  </main>
+      <footer class="toolbar" id="study-actions">
+        <button id="btn-show" class="btn btn-primary btn-wide">Antwort zeigen</button>
+        <div id="ease-buttons" class="ease-row" hidden>
+          <button class="ease ease-1" data-ease="1"><span class="ease-ivl"></span><span class="ease-name">Nochmal</span></button>
+          <button class="ease ease-2" data-ease="2"><span class="ease-ivl"></span><span class="ease-name">Schwer</span></button>
+          <button class="ease ease-3" data-ease="3"><span class="ease-ivl"></span><span class="ease-name">Gut</span></button>
+          <button class="ease ease-4" data-ease="4"><span class="ease-ivl"></span><span class="ease-name">Einfach</span></button>
+        </div>
+      </footer>
+    </main>
 
-  <!-- ───────── Bottom-Sheet ───────── -->
+    <div id="nav-dim" class="nav-dim" aria-hidden="true"></div>
+  </div>
+
+  <!-- ───────── Sheet ───────── -->
   <div id="sheet-backdrop" class="sheet-backdrop" hidden></div>
   <section id="sheet" class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" hidden>
-    <div class="sheet-grip" aria-hidden="true"></div>
-    <h2 id="sheet-title"></h2>
-    <div id="sheet-body"></div>
+    <div class="sheet-handle">
+      <div class="sheet-grip" aria-hidden="true"></div>
+      <h2 id="sheet-title"></h2>
+    </div>
+    <div id="sheet-body" class="sheet-body"></div>
   </section>
 
   <div id="busy" class="busy" hidden><div class="busy-box"><div class="spinner"></div><span id="busy-text">Lade …</span></div></div>
-  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden><span id="toast-text"></span><button id="toast-action" class="toast-action" hidden></button></div>
 
   <script type="module" src="./app.js"></script>
 </body>

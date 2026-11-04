@@ -2,7 +2,7 @@
    App-Dateien: Network-first (online immer der neueste Stand), offline aus dem Cache.
    vendor/ (versionierte Bibliotheken wie SQLite-WASM): Cache-first. */
 
-const CACHE = "karteikasten-v2";
+const CACHE = "karteikasten-v3";
 const LIBS = [
   "./vendor/fflate.mjs", "./vendor/fzstd.mjs",
   "./vendor/sqlite-wasm/index.mjs", "./vendor/sqlite-wasm/sqlite3.wasm",
@@ -10,7 +10,7 @@ const LIBS = [
 const SHELL = [
   "./", "./index.html", "./style.css", "./app.js", "./store.js", "./manifest.webmanifest",
   "./anki/collection.js", "./anki/package.js", "./anki/proto.js", "./anki/render.js",
-  "./anki/scheduler.js", "./anki/zstd.js",
+  "./anki/scheduler.js", "./anki/zstd.js", "./ui/motion.js",
   "./icons/icon-192.png", "./icons/apple-touch-icon.png",
 ];
 
