@@ -1,112 +1,92 @@
 # Karteikasten
 
-Eine selbst gehostete Karteikarten-Quiz-App für Vorlesungen. Läuft als statische
-Web-App auf GitHub Pages und lässt sich auf iPhone/iPad wie eine native App auf
-den Home-Bildschirm legen (PWA, offline-fähig).
+Anki-Stapel unterwegs lernen – im Browser, als App auf dem Home-Bildschirm.
 
-**Struktur:** Semester → Kurs → Vorlesung. Vor jedem Quiz wählst du frei aus,
-welche Vorlesungen abgefragt werden. Fragen sind Single- oder Multiple-Choice;
-die Antwortoptionen sind zunächst verdeckt – erst überlegen, dann einblenden,
-dann auflösen.
+Am Computer erstellst und bearbeitest du Karten wie gewohnt in **Anki**. Die App
+öffnet die exportierte Datei (`.apkg` oder `.colpkg`), du lernst mit Ankis
+eigenem Planer (Nochmal / Schwer / Gut / Einfach), und am Ende gibst du die
+Datei **mit deinem Lernfortschritt** wieder an Anki zurück.
+
+Alles läuft lokal im Browser. Die Datei wird nirgends hochgeladen; der Lernstand
+wird im Browser gespeichert und überlebt das Schließen der App.
 
 ---
 
-## 1. Auf GitHub veröffentlichen
+## Workflow
 
-1. Neues Repository auf GitHub anlegen (z. B. `karteikasten`), public oder
-   private (GitHub Pages für private Repos braucht GitHub Pro).
-2. Alle Dateien dieses Ordners ins Repository hochladen – entweder über
-   *Add file → Upload files* im Browser oder per Git:
+### Computer → Handy
 
-   ```bash
-   git init
-   git add .
-   git commit -m "Karteikasten initial"
-   git branch -M main
-   git remote add origin https://github.com/DEIN-NAME/karteikasten.git
-   git push -u origin main
-   ```
+1. In Anki: **Datei → Exportieren**
+   - Format: **Anki-Sammlungspaket (.colpkg)** *(empfohlen)* oder **Anki-Stapelpaket (.apkg)**
+   - Häkchen bei **Lernfortschritt einbeziehen** und **Medien einbeziehen**
+2. Datei aufs iPhone bringen (AirDrop → „In Dateien sichern“, iCloud Drive, Mail …).
+3. In der App **Anki-Datei öffnen** und die Datei wählen. Fertig.
 
-3. Im Repository: **Settings → Pages → Build and deployment** →
-   Source: *Deploy from a branch* → Branch: `main`, Ordner: `/ (root)` → Save.
-4. Nach ein bis zwei Minuten ist die App erreichbar unter
-   `https://DEIN-NAME.github.io/karteikasten/`
+### Handy → Computer
 
-Jeder spätere Push (neue Fragen!) ist nach kurzer Zeit automatisch live.
+1. In der App **Exportieren** → **Teilen / In „Dateien“ sichern** (oder AirDrop an den Mac).
+2. Am Computer in Anki zurückholen:
 
-## 2. Auf iPhone/iPad installieren
+| Format | So importierst du in Anki |
+|---|---|
+| **.colpkg** | **Datei → Importieren**, Datei wählen, das Ersetzen der Sammlung bestätigen. Karten + Fortschritt sind 1:1 übernommen. |
+| **.apkg** | Zuerst die betroffenen Stapel in Anki **löschen**, dann **Datei → Importieren** mit „Lernfortschritt importieren“. |
 
-1. Die App-URL in **Safari** öffnen (wichtig: Safari, nicht Chrome).
-2. Teilen-Symbol (Quadrat mit Pfeil) → **Zum Home-Bildschirm**.
-3. Fertig – die App startet im Vollbild mit eigenem Icon und funktioniert
-   nach dem ersten Laden auch offline. Neue Fragen werden automatisch
-   geladen, sobald du online bist.
+**Warum der Unterschied?** Anki übernimmt beim Import eines `.apkg` für Karten,
+die es schon kennt, *keinen* Lernstand (das steht so im Anki-Quellcode). Ein
+`.colpkg` ersetzt dagegen die ganze Sammlung – dafür gehen Änderungen verloren,
+die du am Computer seit dem letzten Export gemacht hast. Faustregel: nicht
+gleichzeitig am Computer und am Handy lernen, sondern die Datei hin- und hergeben.
 
-## 3. Neue Fragen hinzufügen
+> Bei `.colpkg` fragt Anki danach beim nächsten Sync mit AnkiWeb, ob hoch- oder
+> heruntergeladen werden soll – „Hochladen“ wählen, damit der Handy-Fortschritt gilt.
 
-### Variante A: Mit Claude (empfohlen)
+## Funktionen
 
-Im Repo liegt unter `claude-skill/karteikarten-fragen/` ein Skill für
-Claude (Cowork). Damit reicht es, Claude die Vorlesungsfolien zu geben:
+- **Stapel-Übersicht** mit Neu / Lernen / Fällig wie in Anki, inkl. Unterstapeln
+- **Lernen nach Ankis SM-2-Planer (v3)**: Lernschritte, Intervalle, Ease, Fuzz,
+  Tageslimits und Leech-Erkennung – mit den Stapel-Optionen aus deiner Datei
+- **Rückgängig** (↶) für die letzten Antworten
+- **Lernfortschritt zurücksetzen** – für einen Stapel (⋯ neben dem Stapel) oder
+  für die ganze Datei (⋯ oben rechts). Entspricht „Zurücksetzen/Vergessen“ in Anki:
+  alle Karten werden wieder neu, die Statistik-Historie bleibt.
+- **Tageslimits ignorieren** – praktisch vor der Klausur, um alle neuen Karten sofort zu lernen
+- Kartenvorlagen mit deinem Anki-CSS, Bilder, Audio, Lückentext (Cloze),
+  Eingabefelder (`{{type:…}}`), Image Occlusion
+- Mehrere Dateien parallel, offline nutzbar
+- Karten aus **Filterstapeln** werden beim Lernen in ihren Heimatstapel
+  zurückgelegt (wie „Leeren“ in Anki); den Filterstapel in Anki danach einfach neu aufbauen
 
-> „Hier ist VL 03 von Fixed Income – erstelle mir daraus Fragen für den
-> Karteikasten.“
+**Nicht enthalten:** Karten anlegen/bearbeiten (dafür ist Anki am Computer da),
+FSRS (die App plant mit SM-2; Anki rechnet FSRS-Werte aus der Lernhistorie
+nach, falls du FSRS nutzt), JavaScript in Kartenvorlagen, MathJax.
 
-Claude liest die Unterlagen, schreibt klausurnahe Fragen im richtigen Format,
-legt die Datei an, trägt sie in `data/index.json` ein und validiert alles.
-Danach nur noch committen/pushen.
+## Auf GitHub Pages veröffentlichen
 
-### Variante B: Von Hand
+1. **Settings → Pages → Build and deployment** → Source: *Deploy from a branch*
+   → Branch `main`, Ordner `/ (root)` → Save.
+2. Nach ein, zwei Minuten läuft die App unter
+   `https://<name>.github.io/<repo>/`.
 
-1. Markdown-Datei anlegen, z. B. `data/sem1/fixed-income/vl03.md`:
+## Auf iPhone/iPad installieren
 
-   ```markdown
-   # Fixed Income · VL 03 – Thema
+1. Die App-URL in **Safari** öffnen.
+2. Teilen-Symbol → **Zum Home-Bildschirm**.
 
-   ### Hier steht die Frage?
-   - [ ] Falsche Option
-   - [x] Richtige Option
-   - [ ] Falsche Option
-   > Erklärung, warum die richtige Antwort stimmt.
-   ```
-
-   Regeln: Frage beginnt mit `### `, Optionen mit `- [ ]` / `- [x]`
-   (eine Option pro Zeile), mehrere `[x]` = Multiple Choice (erkennt die App
-   automatisch), `>`-Zeilen = Erklärung (optional).
-
-2. Vorlesung in `data/index.json` eintragen:
-
-   ```json
-   { "name": "VL 03 – Thema", "file": "data/sem1/fixed-income/vl03.md" }
-   ```
-
-   Neue Kurse/Semester nach demselben Muster ergänzen.
-
-3. Optional prüfen:
-
-   ```bash
-   python3 claude-skill/karteikarten-fragen/scripts/validate.py data/ --index data/index.json
-   ```
-
-4. Committen und pushen – fertig.
-
-## 4. Projektdateien
+## Projektdateien
 
 | Pfad | Zweck |
 |---|---|
-| `index.html`, `app.js`, `style.css` | Die App (kein Build-Schritt nötig) |
-| `data/index.json` | Manifest aller Semester, Kurse, Vorlesungen |
-| `data/**/*.md` | Die Fragen, eine Datei pro Vorlesung |
-| `manifest.webmanifest`, `sw.js`, `icons/` | PWA: Home-Screen-Installation & Offline-Betrieb |
-| `claude-skill/karteikarten-fragen/` | Skill für Claude zum Fragen-Erstellen |
+| `index.html`, `app.js`, `style.css` | Oberfläche |
+| `store.js` | Speicherung im Browser (IndexedDB) |
+| `anki/package.js` | `.apkg`/`.colpkg` lesen und schreiben (ZIP, zstd, Medienliste) |
+| `anki/collection.js` | Zugriff auf die Anki-Datenbank: Stapel, Warteschlangen, Antworten, Zurücksetzen |
+| `anki/scheduler.js` | Ankis SM-2-Planer (nachgebaut nach `rslib/src/scheduler`) |
+| `anki/render.js` | Kartenvorlagen, Cloze, Image Occlusion, Medien |
+| `anki/proto.js`, `anki/zstd.js` | Protobuf- und Zstandard-Hilfen |
+| `vendor/` | [SQLite WASM](https://sqlite.org/wasm) 3.54.1, [fflate](https://github.com/101arrowz/fflate) 0.8.3, [fzstd](https://github.com/101arrowz/fzstd) 0.1.1 |
+| `manifest.webmanifest`, `sw.js`, `icons/` | PWA: Home-Bildschirm & Offline-Betrieb |
 
-## 5. Tipps
-
-- **Quiz-Einstellungen:** „Fragen mischen" und „Antwortreihenfolge mischen"
-  unten in der Übersicht; die Auswahl der Vorlesungen merkt sich die App.
-- **Tastatur (iPad/Desktop):** `1`–`9` wählt Antworten, `Enter` löst die
-  jeweils nächste Aktion aus (einblenden → auflösen → weiter).
-- **Falsche Fragen wiederholen:** Am Ende jedes Quiz direkt als eigener
-  Durchgang möglich.
-- **Update erscheint nicht?** Die App lädt online immer den neuesten Stand;
-  bei hartnäckigem Cache die App einmal schließen und neu öffnen.
+Getestet wurde der Rückweg mit dem offiziellen Anki-Backend (Anki 26.09):
+Exporte aus der App lassen sich als `.apkg` und `.colpkg` importieren, die
+Datenbank-Prüfung meldet keine Fehler, Lernstand und Historie kommen an.
